@@ -1,11 +1,9 @@
 package com.ws.demo.ui.controller;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,13 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ws.demo.ui.Exception.UserServiceException;
 import com.ws.demo.ui.request.EmployeeDetails;
 import com.ws.demo.ui.request.UpdateEmployeeDetails;
-import com.ws.demo.ui.response.EmployeeRest;
+import com.ws.demo.ui.userService.UserService;
+import com.ws.demo.ui.userService.Impl.UserServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -29,7 +27,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/users") // http:8080/users
 public class UserController {
 	Map<String, EmployeeDetails> emp;
-
+	@Autowired
+    UserService userService;
 //	@GetMapping
 //	public String getUsers(@RequestParam(value = "page", defaultValue = "23", required = false) int page,
 //			@RequestParam(value = "limit", defaultValue = "25") int limit,
@@ -59,17 +58,7 @@ public class UserController {
 	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<EmployeeDetails> createUsers(@Valid @RequestBody EmployeeDetails empDetail) {
-		EmployeeDetails empdet = new EmployeeDetails();
-		empdet.setFirstName(empDetail.getFirstName());
-		empdet.setLastName(empDetail.getLastName());
-		empdet.setEmail(empDetail.getEmail());
-		empdet.setPassWord(empDetail.getPassWord());
-		String empId = UUID.randomUUID().toString();
-		empdet.setEmpId(empId);
-		if (emp == null) {
-			emp = new HashMap<>();
-		}
-		emp.put(empId, empdet);
+		EmployeeDetails empdet=new UserServiceImpl().createUser(empDetail);
 		return new ResponseEntity<>(empdet, HttpStatus.ACCEPTED);
 	}
 
