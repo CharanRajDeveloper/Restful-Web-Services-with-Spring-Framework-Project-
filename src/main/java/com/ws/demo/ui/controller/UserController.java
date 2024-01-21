@@ -58,7 +58,7 @@ public class UserController {
 	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<EmployeeDetails> createUsers(@Valid @RequestBody EmployeeDetails empDetail) {
-		EmployeeDetails empdet=new UserServiceImpl().createUser(empDetail);
+		EmployeeDetails empdet=userService.createUser(empDetail);
 		return new ResponseEntity<>(empdet, HttpStatus.ACCEPTED);
 	}
 

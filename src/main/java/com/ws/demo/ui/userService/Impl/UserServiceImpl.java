@@ -20,8 +20,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Autowired
-	public UserServiceImpl(Map<String, EmployeeDetails> emp, Utils utils) {
-		this.emp = emp;
+	public UserServiceImpl( Utils utils) {
 		this.utils = utils;
 	}
 
@@ -32,7 +31,7 @@ public class UserServiceImpl implements UserService {
 		empdet.setLastName(empDetail.getLastName());
 		empdet.setEmail(empDetail.getEmail());
 		empdet.setPassWord(empDetail.getPassWord());
-		String empId = new Utils().generateEmpID();
+		String empId = utils.generateEmpID();
 		empdet.setEmpId(empId);
 		if (emp == null) {
 			emp = new HashMap<>();
